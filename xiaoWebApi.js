@@ -1,20 +1,11 @@
-//things needed to be done
-//1. when multiple number of instances are created, the code should be able to download all the pdb files
-//2. improve readability of the code
-//3. add comments to the code
-//4. remove print statements
-
-// initial commands
-// npm install playwright
-// npx playwright install
 const startTime = new Date();
 
 const task_name = 'Random';
 const email = 'xyz@iisc.ac.in';
 const sequence =    'CAACTTGGGAGTCTTCCTTAATTGCTC';
 const dot_bracket = '(((...((((....))))...)))...';
-const number_of_structures = '1';
-const destination = '~/Downloads/XiaoLab_Output_'
+const number_of_structures = '5';
+const destination = '~/Downloads/'
 const browserType = 'chromium';  //firefox, chromium
 
 
@@ -118,34 +109,43 @@ const pattern = /Job\s*([\w-]+)/;
 const match = h4Text.match(pattern);
 const jobID = match ? match[1] : null;
 
-for (let i = 0; i < number_of_structures; i++) {
-  const urlGenerated = `http://biophy.hust.edu.cn/new/3dRNA/jobs/${jobID}/download?name=pdb&id=${i + 1}`;
 
-  const terminalCommand = 'curl \'' + urlGenerated + '\' > ' + destination + jobID + '_' + (i + 1) + '.pdb';
 
-  console.log('Command being executed: \n', terminalCommand)
-
-  const { exec } = require('child_process');
-  console.log('\nDownloading the file...');
-  exec(terminalCommand, (error, stdout, stderr) => {
-    if (error) {
-      console.error(`\nError: ${error.message}`);
-      return;
-    }
-    if (stderr) {
-      console.error(`\nstderr: ${stderr}`);
-      return;
-    }
-    console.log(`\nstdout:\n${stdout}`);
-  });
-}
-
-const scores = await page.$$eval('table.table-bordered tbody tr td', tds => tds.map(td => td.innerText));
-  
-  // Print the scores in an ordered format
+const scores = await page.$$eval('table.table-bordered tbody tr td', tds => tds.map(td => td.innerText));  
+  //get the index of the least score
+  let minScoreIndex = 0;
+  let minScore = 100;
   scores.forEach((score, index) => {
-  console.log(`Score ${index + 1}: ${score}`);
+    if (score < minScore) {
+      minScore = score;
+      minScoreIndex = index;
+    }
   });
+  
+  console.log(`Score ${minScoreIndex + 1}: ${minScore}`);
+
+  
+    const urlGenerated = `http://biophy.hust.edu.cn/new/3dRNA/jobs/${jobID}/download?name=pdb&id=${minScoreIndex + 1}`;
+  
+    const terminalCommand = 'curl \'' + urlGenerated + '\' > ' + destination + 'outputAptamer_' + (minScoreIndex + 1) + '.pdb';
+  
+    console.log('Command being executed: \n', terminalCommand)
+  
+    const { exec } = require('child_process');
+    console.log('\nDownloading the file...');
+    exec(terminalCommand, (error, stdout, stderr) => {
+      if (error) {
+        console.error(`\nError: ${error.message}`);
+        return;
+      }
+      if (stderr) {
+        console.error(`\nstderr: ${stderr}`);
+        return;
+      }
+      console.log(`\nstdout:\n${stdout}`);
+    });
+  
+  
 
   console.log('Closing the browser...');
   await browser.close();
@@ -156,6 +156,12 @@ const timeDifference = endTime - startTime;
 const hours = Math.floor(timeDifference / (1000 * 60 * 60));
 const minutes = Math.floor((timeDifference % (1000 * 60 * 60)) / (1000 * 60));
 const seconds = Math.floor((timeDifference % (1000 * 60)) / 1000);
+
+// I need to create an output log file which has all the information that is printed on the console
+// the output log file should be saved in the same directory as the pdb files
+// the output log file should be named as output_log_<jobID>.txt
+
+
 
 console.log(`Time taken to complete the process: ${hours} hrs ${minutes} mins ${seconds} secs`);
 

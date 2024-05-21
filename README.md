@@ -26,8 +26,8 @@
 
 1. Execute this command in the terminal
     
-    `cd Downloads
-     git clone https://github.com/adithyaka3/iGEM.git`
+    `cd Downloads`
+     `git clone https://github.com/adithyaka3/iGEM.git`
     
     These commands will copy the files into an iGEM directory 
     

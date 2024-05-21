@@ -27,15 +27,16 @@
 1. Execute this command in the terminal
     
     `cd Downloads`
+   
      `git clone https://github.com/adithyaka3/iGEM.git`
     
     These commands will copy the files into an iGEM directory 
     
     
-2. Once you have the file on your computer, open xiaoWebApi.js using a text editor or an IDE of your choice.
+3. Once you have the file on your computer, open xiaoWebApi.js using a text editor or an IDE of your choice.
 
    
-3. You should be able to see these initial parameters in the file. All of these have to be set according to the users choice. Since we are only dealing with DNA modelling as of now, we wouldn’t have to configure any other settings.
+4. You should be able to see these initial parameters in the file. All of these have to be set according to the users choice. Since we are only dealing with DNA modelling as of now, we wouldn’t have to configure any other settings.
     
     ![image](https://github.com/adithyaka3/iGEM/assets/143578987/74c59504-2c52-4e0c-a832-4439c605a399)
 
